@@ -1,0 +1,91 @@
+.header {
+    padding: 30px;
+    text-align: center;
+    background: rgba(173,185,202,1);
+    color: black;
+    font-style: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    }
+
+body {
+    background: linear-gradient(rgba(0,0,50,0.25), rgba(0,0,50,0.25));
+    background-size: cover;
+    background-position:center;
+}
+
+body::after {
+    content: "";
+    background: url(watermark.png);
+    opacity: 0.3;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    position: absolute;
+    z-index: -1;
+}
+
+.login-box {
+    max-width: 700px;
+    float: none;
+    margin: 100px auto;
+}
+
+.middle-column {
+    column-width: 550px;
+}
+
+.table {
+    padding: 15px;
+    border: none;
+}
+
+td {
+    text-align: center;
+    background-color: rgba(173,185,202,1);
+    border: none;
+}
+
+.logout {
+    height: 30px;
+}
+
+.slidecontainer {
+    width: 100%; /* Width of the outside container */
+  }
+  
+  /* The slider itself */
+  .slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+  }
+  
+  /* Mouse-over effects */
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: rgba(173,185,202,1); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: rgba(173,185,202,1); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
