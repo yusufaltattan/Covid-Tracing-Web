@@ -120,7 +120,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </div>
     <div class="col-md-6" login-right>
         <h2> Register Here</h2>
-        <form action="register.php" method="post">
+        <form action="registering.php" method="post">
             <div class="form-group">
                 <label> Name </label>
                 <input type="text" name="name" class="form-control" required>
