@@ -104,7 +104,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                     <input type="password" name="pass" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-primary"> Login </button>
-                <button type="submit" class="btn btn-primary"> Cancel </button>
+                <button type="submit" class="btn btn-primary" value="Reload Page" onclick="reload"> Cancel </button>
                 <p>
                 <p>
                 <button type="submit" class="btn btn-primary" onclick="return show('Register','Login')"> Register </button>

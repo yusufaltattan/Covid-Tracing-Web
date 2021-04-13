@@ -12,6 +12,53 @@ href="style.css">
 <link rel="stylesheet" type="text/css"
 href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+<script type="text/javascript">
+<!--
+
+function FindPosition(oElement)
+{
+  if(typeof( oElement.offsetParent ) != "undefined")
+  {
+    for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
+    {
+      posX += oElement.offsetLeft;
+      posY += oElement.offsetTop;
+    }
+      return [ posX, posY ];
+    }
+    else
+    {
+      return [ oElement.x, oElement.y ];
+    }
+}
+
+function GetCoordinates(e)
+{
+  var PosX = 0;
+  var PosY = 0;
+  var ImgPos;
+  ImgPos = FindPosition(myImg);
+  if (!e) var e = window.event;
+  if (e.pageX || e.pageY)
+  {
+    PosX = e.pageX;
+    PosY = e.pageY;
+  }
+  else if (e.clientX || e.clientY)
+    {
+      PosX = e.clientX + document.body.scrollLeft
+        + document.documentElement.scrollLeft;
+      PosY = e.clientY + document.body.scrollTop
+        + document.documentElement.scrollTop;
+    }
+  PosX = PosX - ImgPos[0];
+  PosY = PosY - ImgPos[1];
+  document.getElementById("x").innerHTML = PosX;
+  document.getElementById("y").innerHTML = PosY;
+}
+
+</script>
+
 <script>
     function show(shown, hidden) {
       document.getElementById(shown).style.display='block';
@@ -95,7 +142,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <div class="table">
     <table style="width:45%">
         <tr id="ROW1">
-            <td onclick="return show('Home','Home')">Home</td>
+            <td value="Reload Page" onclick="reload">Home</td>
         </tr>
         <tr>
             <td onclick="return show('Overview','Home')">Overview</td>
@@ -141,6 +188,43 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <div class="header">
         <h1>COVID-19 Contact Tracing</h1>
     </div>
+    <div class="col-md-6" style="position: absolute; left:200px">
+        <?php
+            //create connection
+            $connection = mysqli_connect('localhost', 'root', 'ilovemessi10');
+
+        //test if connection failed
+        if(mysqli_connect_errno()){
+            die("connection failed: "
+                . mysqli_connect_error()
+                . " (" . mysqli_connect_errno()
+                . ")");
+            }
+
+        //get results from database
+        $result = mysqli_query($connection,"SELECT * FROM products");
+        $all_property = array();  //declare an array for saving property
+
+        //showing property
+        echo '<table class="data-table">
+            <tr class="data-heading">';  //initialize table tag
+        while ($property = mysqli_fetch_field($result)) {
+            echo '<td>' . $property->name . '</td>';  //get field name for header
+            array_push($all_property, $property->name);  //save those to array
+            }
+            echo '</tr>'; //end tr tag
+
+        //showing all data
+        while ($row = mysqli_fetch_array($result)) {
+            echo "<tr>";
+            foreach ($all_property as $item) {
+                echo '<td>' . $row[$item] . '</td>'; //get items using property value
+                }
+                echo '</tr>';
+                }
+                echo "</table>";
+            ?>
+    </div>
     <div class="col-md-6" style="position: absolute; left:0px">
         <div class="table">
         <table style="width:45%">
@@ -148,7 +232,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <td onclick="return show('Home','Overview')">Home</td>
             </tr>
             <tr>
-                <td onclick="return show('Overview','Overview')">Overview</td>
+                <td value="Reload Page" onclick="reload">Overview</td>
             </tr>
             <tr>
                 <td onclick="return show('AddVisit','Overview')">Add Visit</td>
@@ -183,7 +267,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <td onclick="return show('Overview','AddVisit')">Overview</td>
             </tr>
             <tr>
-                <td onclick="return show('AddVisit','AddVisit')">Add Visit</td>
+                <td value="Reload Page" onclick="reload">Add Visit</td>
             </tr>
             <tr>
                 <td onclick="return show('Report','AddVisit')">Report</td>
@@ -203,20 +287,31 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <h2>Add Visit</h2>
             <hr />
             <div class="middle-column">
-                <div class="col-md-6" style="position: absolute; left: 10px; top:100px" middle>
-                    <form>
+                <div style="position: absolute; left: 10px; top:100px" middle>
+                    <form action="visit.php" method="post">
+                    <div style="position: absolute; left:300px" style="border:3px solid black;">
+                    <img id="myImgId" alt="" src="exeter.jpg" width="300" height="300" />
+
+                    <script type="text/javascript">
+                    <!--
+                    var myImg = document.getElementById("myImgId");
+                    myImg.onmousedown = GetCoordinates; 
+                    </script>
+
+                    <p>X:<span id="x"></span></p>
+                    <p>Y:<span id="y"></span></p>
+                    </div>
                         <label for="fname">Date</label><br>
                         <input type="text" id="date" name="date"><br>
                         <label for="lname">Time</label><br>
                         <input type="text" id="time" name="time"><br>
                         <label for="lname">Duration</label><br>
-                        <input type="text" id="duration" name="duration">
+                        <input type="text" id="duration" name="duration"> <br>
+                        <input type="text" id="x" name="x"> <br>
+                        <input type="text" id="y" name="y">
+                        <br> <br> <button type="submit" class="btn btn-primary" name="addvisit"> Add </button> <br> <br>
+                        <button value="Reload Page" onclick="reload" class="btn btn-primary"> Cancel </button>
                       </form>
-                    <button type="submit" class="btn btn-primary"> Add </button> <br> <br>
-                    <button type="submit" class="btn btn-primary"> Cancel </button>
-                </div>
-                <div class="col-md-6" style="position: absolute; left:300px">
-                    <img src="exeter.jpg" width="300" height="300" style="border:3px solid black;">
                 </div>
         </div>
     </div>
@@ -239,7 +334,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <td onclick="return show('AddVisit','Report')">Add Visit</td>
             </tr>
             <tr>
-                <td onclick="return show('Report','Report')">Report</td>
+                <td value="Reload Page" onclick="reload">Report</td>
             </tr>
             <tr>
                 <td onclick="return show('Settings','Report')">Settings</td>
@@ -292,7 +387,7 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <td onclick="return show('Report','Settings')">Report</td>
             </tr>
             <tr>
-                <td onclick="return show('Settings','Settings')">Settings</td>
+                <td value="Reload Page" onclick="reload">Settings</td>
             </tr>
             <div>
                 <tr>
@@ -323,11 +418,11 @@ href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                         <div class="slidecontainer">
                             <label for="distance">Distance</label> <br>
                             <input type="range" min="1" max="500" value="50" class="slider" id="myRange">
-                            <p>Value: <span id="demo"></span></p>
+                            <p> <span id="demo">Value:</span></p>
                         </div>
                       </form>
                     <button type="submit" class="btn btn-primary"> Submit </button>
-                    <button type="submit" class="btn btn-primary"> Cancel </button>
+                    <button type="submit" class="btn btn-primary" value="Reload Page" onclick="reload"> Cancel </button>
                 </div>
         </div>
         </div>
