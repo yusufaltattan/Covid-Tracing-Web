@@ -36,6 +36,10 @@ body::after {
     column-width: 550px;
 }
 
+.middle {
+  
+}
+
 .table {
     padding: 15px;
     border: none;
